@@ -6,9 +6,9 @@ import json
 def main():
     today = datetime.datetime.today()
     # Get everything you can from 5 years ago daily interval
-    years_start_1d_interval = datetime.timedelta(days=1) #(days=365*5) 
+    years_start_1d_interval = datetime.timedelta(days=365*5)
     # Get everything you can from 60 days ago 15m interval
-    days_start_15m_interval = datetime.timedelta(days=1)#(days=60)
+    days_start_15m_interval = datetime.timedelta(days=59)
     
     day_tickers = data.get_tickers(
         start_date=today - years_start_1d_interval,
