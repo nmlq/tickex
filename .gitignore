@@ -8,3 +8,5 @@ __pycache__
 # Flat files
 *.json
 *.csv
+.ipynb_checkpoints
+*.ipynb
