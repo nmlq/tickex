@@ -1,53 +1,39 @@
-import datetime
-from tickex import data
-from tickex import database
+import os
 import logging
-import tqdm
+from tickex import pipeline
+from tickex import extractors
+from tickex import translators
+from tickex import loaders
 
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
+
+def validate_envvars(
+        envvars: list = ["MONGO_PASS", "MONGO_URI", "MONGO_USER"]):
+    for envvar in envvars:
+        if envvar not in os.environ:
+            raise ValueError("Not all environment variables available; {envvars}")
 
 def main():
-    logger.info("Starting main cli")
-    today = datetime.datetime.today()
+    logger.info("Starting CLI for tickex")
+    validate_envvars()
+    logger.info("Validated environment variables")
 
-    logger.info("Gathering 5 years of 1d data")
-    # Get everything you can from 5 years ago daily interval
-    years_start_1d_interval = datetime.timedelta(days=365*5)
+    logger.info("Starting the ETL pipeline")
+    pipeline.Pipeline(
+        extractor=extractors.YahooExtractor(),
+        translator=translators.YahooTranslator(),
+        loader=loaders.MongoLoader(
+            user=os.environ['MONGO_USER'],
+            password=os.environ['MONGO_PASS'],
+            uri=os.environ['MONGO_URI']
+        )
+    ).run()
+    logger.info("Completed running the ETL pipeline")
 
-    logger.info("Gathering 60 days of 15m data")
-    # Get everything you can from 60 days ago 15m interval
-    days_start_15m_interval = datetime.timedelta(days=59)
 
-    logger.info("getting the 1d collection")
-    collection_1d = database.get_collection('1d')
-    day_tickers = data.get_tickers(
-        start_date=today - years_start_1d_interval,
-        end_date=today,
-        interval='1d'
-    )
-    logger.info("Inserting 1d ticker data")
-    data_1d = []
-    for t in tqdm.tqdm(day_tickers):
-        d = t.to_dict()
-        d['timestamp'] = datetime.datetime.fromisoformat(d['timestamp'])
-        data_1d.append(d)
-    collection_1d.insert_many(data_1d)
-
-    logger.info("getting the 15m collection")
-    collection_1d = database.get_collection('15m')
-    intraday_tickers = data.get_tickers(
-        start_date=today - days_start_15m_interval,
-        end_date=today,
-        interval='15m'
-    )
-    logger.info("Inserting 1d ticker data")
-    data_15m = []
-    for t in tqdm.tqdm(intraday_tickers):
-        d = t.to_dict()
-        d['timestamp'] = datetime.datetime.fromisoformat(d['timestamp'])
-        data_15m.append(d)
-    collection_1d.insert_many(data_15m)
-
-    logger.info("Completed inserts")
+if __name__ == "__main__":
+    logger.info(f"Running main; {__name__}")
+    main()

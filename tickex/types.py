@@ -1,4 +1,5 @@
 from dataclasses import dataclass, asdict
+import datetime
 
 
 @dataclass
@@ -12,9 +13,16 @@ class Ticker:
     volume: float
     interval: str
 
-    def to_dict(self):
-        return asdict(self)
+    def to_dict(self, dt_enabled = False):
+        dictionary = asdict(self)
+        if dt_enabled:
+            dictionary['timestamp'] = datetime.datetime.fromisoformat(
+                dictionary['timestamp']
+            )
+        return dictionary
 
     @classmethod
     def from_dict(cls, dictionary):
+        if isinstance(dictionary['timestamp'], datetime.datetime):
+            dictionary['timestamp'] = dictionary['timestamp'].isoformat()
         return cls(**dictionary)
