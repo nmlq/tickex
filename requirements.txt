@@ -2,3 +2,5 @@ pandas
 yfinance
 pytest
 flake8
+pymongo
+tqdm

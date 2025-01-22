@@ -14,9 +14,7 @@ class Ticker:
 
     def to_dict(self):
         return asdict(self)
-    
+
     @classmethod
     def from_dict(cls, dictionary):
         return cls(**dictionary)
-
-
