@@ -12,6 +12,8 @@ class YahooTranslator:
             df: pandas.DataFrame,
             interval: str) -> list[types.Ticker]:
         """Translate the dataframe to a list of tickers
+
+        :return list: list of Ticker objects
         """
         logger.info(f"Translating {len(df)} rows to Tickers for interval {interval}")
         tickers = []

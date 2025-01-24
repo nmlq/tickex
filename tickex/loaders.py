@@ -7,6 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 class MongoLoader:
+    """Load the tickers into a mongo db database"""
     def __init__(
             self,
             user: str,

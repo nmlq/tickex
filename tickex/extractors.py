@@ -9,13 +9,18 @@ logger = logging.getLogger(__name__)
 
 
 class YahooExtractor:
+    """Extract ticker data from yahoo finanace"""
     def __init__(self, ticker_names: list|None = None):
         self.ticker_names = ticker_names
         if ticker_names is None:
             self.ticker_names = self.get_default_ticker_names()
         logger.info(f"Initialized extractor with {len(self.ticker_names)} ticker names; {self.ticker_names}")
 
-    def get_default_ticker_names(self):
+    def get_default_ticker_names(self) -> list:
+        """Default supported tickers
+
+        :return list:
+        """
         return [
             # Fiat currency
             # US Dollar / Pound Sterling

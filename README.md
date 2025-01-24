@@ -1,9 +1,30 @@
 # Tickex
 
-## MongoDB
+Gather market ticker data and persist to a external source. A ETL pipeline.
 
-Example dict data for insert
+## Requirements
 
+When using the mongodb loader (default) with the cli, the following environment variables are required.
+
+* `MONGO_PASS` - Mongo DB password
+* `MONGO_URI` - Mongo DB endpoint
+* `MONGO_USER` - Mongo DB username
+
+Be default, a database called `tickerx` will be created with two collections `1d` and `15m`.
+
+## Pipeline
+
+Using the `yfinance` module, initially get 5 years of single day tickers and 60 days of 15 minute tickers.
+
+If the data is populated in the database, use the last known timestamp to get all new ticker data from the previous date to the present.
+
+## Yahoo Finance Data Format
+
+The yahoo data is exported as a DataFrame which is a good format for testing but for using in a database it needs to be translated into a usable single object.
+
+The data gets translated into the following format.
+
+Example
 ```
 {
   "name": "BNB-USD",
@@ -16,4 +37,3 @@ Example dict data for insert
   "interval": "15m"
 }
 ```
-
