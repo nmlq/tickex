@@ -175,3 +175,70 @@ def mock_yfinance(df):
         def download(self, *args, **kwargs):
             return df
     return MockYFinance()
+
+
+@pytest.fixture(scope='session')
+def mock_mongo_container_class(ticker_dt):
+    """Mock Mongo Container for unit tests"""
+    class MockReturn:
+        def __init__(self, acknowledged=True):
+            self.acknowledged = acknowledged
+
+    class MockMongoContainer:
+        def __init__(self, *args, max_results=1, **kwargs):
+            self.max_results = max_results
+
+        def insert_many(self, *args, **kwargs):
+            return MockReturn()
+
+        def find(self, *args, **kwargs):
+            return self
+
+        def sort(self, *args, **kwargs):
+            return self
+
+        def limit(self, *args, **kwargs):
+            items = [ticker_dt.to_dict()] * self.max_results
+            return items
+
+    return MockMongoContainer
+
+
+@pytest.fixture(scope='session')
+def mock_mongo_database_class(mock_mongo_container_class):
+    """Mock Mongo Database for unit tests"""
+    class MockMongoDatabase:
+        def __init__(
+                self,
+                *args,
+                collection_names=['1d', '15m'],
+                max_results=1,
+                **kwargs):
+            self.collection_names = collection_names
+            self.max_results = max_results
+
+        def list_collection_names(self, *args, **kwargs):
+            return self.collection_names
+
+        def __getitem__(self, *args, **kwargs):
+            return mock_mongo_container_class(max_results=self.max_results)
+
+        def create_collection(self, *args, **kwargs):
+            pass
+
+    return MockMongoDatabase
+
+
+@pytest.fixture(scope='session')
+def mock_mongo_client_class(mock_mongo_database_class):
+    """Mock Mongo Client for unit tests"""
+    class MockMongoClient:
+        MAX_RESULTS = 1
+
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def get_database(self, *args, **kwargs):
+            return mock_mongo_database_class(max_results=self.MAX_RESULTS)
+
+    return MockMongoClient

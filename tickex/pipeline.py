@@ -30,17 +30,17 @@ class Pipeline:
         # If collection exists, get the last timestamp and update
         current = datetime.datetime.utcnow()
         logger.info(f"Current timestamp {current.isoformat()}")
-        last_timestamp = self.loader.get_last_timestamp(interval)
+        last_ticker = self.loader.get_last_ticker(interval)
 
         logger.info(f"Populating new collection interval with data {interval}")
-        if last_timestamp is not None:
-            logger.info(f"Last timestamp {last_timestamp.isoformat()}")
-            delta = (current - last_timestamp)
+        if last_ticker is not None:
+            logger.info(f"Last timestamp {last_ticker.timestamp.isoformat()}")
+            delta = (current - last_ticker.timestamp)
         # No collection for the following intervals; populate.
-        elif interval == '1d' and last_timestamp is None:
+        elif interval == '1d' and last_ticker is None:
             # Get everything you can from 5 years ago daily interval
             delta = datetime.timedelta(days=365*5)
-        elif interval == '15m' and last_timestamp is None:
+        elif interval == '15m' and last_ticker is None:
             # Get everything you can from 60 days ago 15m interval
             delta = datetime.timedelta(days=59)
         else:
@@ -53,10 +53,10 @@ class Pipeline:
 
         return current - delta
 
-    def run(self):
+    def run(self) -> 'Pipeline':
         """Run the ETL pipeline
 
-        :return None:
+        :return self:
         """
         for interval in self.supported_intervals:
             df = self.extractor.extract(
@@ -73,3 +73,4 @@ class Pipeline:
 
             tickers = self.translator.translate(df, interval)
             self.loader.load(tickers, interval)
+        return self

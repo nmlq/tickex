@@ -1,3 +1,4 @@
+from pymongo import MongoClient
 import pymongo
 import datetime
 import logging
@@ -16,7 +17,7 @@ class MongoLoader:
             uri: str,
             database_name: str = 'tickex'):
         self.connection_string = f"mongodb+srv://{user}:{password}@{uri}"
-        self.client = pymongo.MongoClient(self.connection_string)
+        self.client = MongoClient(self.connection_string)
         self.database = self.client.get_database(database_name)
 
     def get_last_ticker(
@@ -32,8 +33,11 @@ class MongoLoader:
             logger.info("Collection unknown; cannot extract timestamp")
             return None
         collection = self.get_collection(collection_name)
-        last_one = collection.find_one({}, {"timestamp": -1})
-        return last_one['timestamp']
+        results = list(collection.find().sort({'timestamp': -1}).limit(1))
+        if not results or len(results) < 1:
+            return None
+        last, *_ = results
+        return types.Ticker.from_dict(last, dt_enabled=True)
 
     def get_collection(
             self,
