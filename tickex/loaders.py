@@ -19,7 +19,7 @@ class MongoLoader:
         self.client = pymongo.MongoClient(self.connection_string)
         self.database = self.client.get_database(database_name)
 
-    def get_last_timestamp(
+    def get_last_ticker(
             self,
             collection_name: str) -> datetime.datetime | None:
         """Get the last timestamp for the collection

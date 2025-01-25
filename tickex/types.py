@@ -6,7 +6,7 @@ import datetime
 class Ticker:
     """Ticker object for market ticker data"""
     name: str
-    timestamp: str
+    timestamp: str | datetime.datetime
     close: float
     high: float
     low: float
@@ -22,18 +22,32 @@ class Ticker:
         :return dict:
         """
         dictionary = asdict(self)
-        if dt_enabled:
+        if dt_enabled and isinstance(dictionary['timestamp'], str):
             dictionary['timestamp'] = datetime.datetime.fromisoformat(
                 dictionary['timestamp']
             )
+        elif not dt_enabled and isinstance(
+                dictionary['timestamp'],
+                datetime.datetime):
+            dictionary['timestamp'] = dictionary['timestamp'].isoformat()
         return dictionary
 
     @classmethod
-    def from_dict(cls, dictionary) -> 'Ticker':
+    def from_dict(cls, dictionary, dt_enabled=False) -> 'Ticker':
         """Create a Ticker from a dict
 
         :return Ticker:
         """
-        if isinstance(dictionary['timestamp'], datetime.datetime):
+        if not dt_enabled and isinstance(
+                dictionary['timestamp'],
+                datetime.datetime):
             dictionary['timestamp'] = dictionary['timestamp'].isoformat()
-        return cls(**dictionary)
+        elif dt_enabled and isinstance(dictionary['timestamp'], str):
+            dictionary['timestamp'] = datetime.datetime.fromisoformat(
+                dictionary['timestamp']
+            )
+        # ignore extraneous args
+        return cls(**{
+            k: v for k, v in dictionary.items()
+            if k in cls.__annotations__.keys()
+        })
