@@ -1,6 +1,7 @@
 import datetime
 from tickex import extractors
 
+
 class TestYahooExtractor:
     def test_extract(self, df, mock_yfinance, monkeypatch):
         """Test extracting from the YahooExtractor
@@ -15,4 +16,3 @@ class TestYahooExtractor:
             '1d'
         )
         assert len(extracted_df) == len(df) and extracted_df.equals(df)
-        

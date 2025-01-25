@@ -14,7 +14,7 @@ def test_ticker_to_dict(ticker):
 
 
 def test_ticker_to_dict_dt_enabled(ticker):
-    """Test getting a dictionary datatype from the Ticker with a datetime timestamp
+    """Test getting a dictionary from the Ticker with a datetime
 
     :return None:
     :raises AssertionError:
@@ -22,3 +22,14 @@ def test_ticker_to_dict_dt_enabled(ticker):
     dictionary = ticker.to_dict(dt_enabled=True)
     assert dictionary
     assert isinstance(dictionary['timestamp'], datetime.datetime)
+
+
+def test_ticker_from_dict(ticker):
+    """Test getting a Ticker from a dictionary
+
+    :return None:
+    :raises AssertionError:
+    """
+    dictionary = ticker.to_dict()
+    ticker = types.Ticker.from_dict(dictionary)
+    assert ticker and isinstance(ticker, types.Ticker)

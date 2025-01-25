@@ -1,11 +1,11 @@
 import pytest
 import datetime
 import pandas
-import os
+import pathlib
 from tickex import types
 
 
-abspath = os.path.dirname(os.path.realpath(__file__))
+abspath = pathlib.Path(__file__).resolve().parent
 
 
 @pytest.fixture(scope='session')
@@ -21,6 +21,7 @@ def ticker():
         volume=1.0,
         interval='15m'
     )
+
 
 @pytest.fixture(scope='session')
 def df(filename="test-ticker-data.pkl"):
