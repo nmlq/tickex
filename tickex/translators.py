@@ -1,5 +1,4 @@
 import logging
-import datetime
 import pandas
 from tickex import types
 
@@ -15,7 +14,9 @@ class YahooTranslator:
 
         :return list: list of Ticker objects
         """
-        logger.info(f"Translating {len(df)} rows to Tickers for interval {interval}")
+        logger.info(
+            f"Translating {len(df)} rows to Tickers for interval {interval}"
+        )
         tickers = []
         for timestamp, row in df.iterrows():
             for ticker_name, ticker_values in row.groupby('Ticker'):
@@ -30,5 +31,7 @@ class YahooTranslator:
                     interval=interval
                 )
                 tickers.append(ticker)
-        logger.info(f"Translated {len(tickers)} tickers for interval {interval}")
+        logger.info(
+            f"Translated {len(tickers)} tickers for interval {interval}"
+        )
         return tickers

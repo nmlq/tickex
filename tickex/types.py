@@ -14,7 +14,7 @@ class Ticker:
     volume: float
     interval: str
 
-    def to_dict(self, dt_enabled = False) -> dict:
+    def to_dict(self, dt_enabled=False) -> dict:
         """Create to a dict from the Ticker.
 
         If `dt_enabled` is True, translate the timestamp to a datetime object.

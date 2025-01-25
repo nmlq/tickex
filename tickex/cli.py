@@ -16,13 +16,13 @@ def validate_envvars(
             "MONGO_URI",
             "MONGO_USER"]) -> None:
     """Check for required environment variables.
-    
+
     :return None:
     :raises ValueError: exception on missing environment variables
     """
     for envvar in envvars:
         if envvar not in os.environ:
-            raise ValueError("Not all environment variables available; {envvars}")
+            raise ValueError("Not all env vars available; {envvars}")
 
 
 def main() -> None:
