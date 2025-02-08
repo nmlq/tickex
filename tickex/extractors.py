@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import yfinance
 import datetime
 import pandas
@@ -9,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 class YahooExtractor:
     """Extract ticker data from yahoo finanace"""
-    def __init__(self, ticker_names: list | None = None):
+    def __init__(self, ticker_names: list | None = None) -> None:
         self.ticker_names = ticker_names
         if ticker_names is None:
             self.ticker_names = self.get_default_ticker_names()
@@ -17,7 +19,8 @@ class YahooExtractor:
             f"Init, {len(self.ticker_names)} tickers {self.ticker_names}"
         )
 
-    def get_default_ticker_names(self) -> list:
+    @staticmethod
+    def get_default_ticker_names() -> list:
         """Default supported tickers
 
         :return list:
