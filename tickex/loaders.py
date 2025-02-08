@@ -15,8 +15,21 @@ class MongoLoader:
             user: str,
             password: str,
             uri: str,
-            database_name: str = 'tickex'):
-        self.connection_string = f"mongodb+srv://{user}:{password}@{uri}"
+            database_name: str = 'tickex',
+            local_host: bool = True) -> None:
+        """
+
+        :param user:
+        :param password:
+        :param uri:
+        :param database_name:
+        :param local_host: Indicates if it's running locally or MongoDB Atlas Cloud service
+        """
+
+        host = 'mongodb+srv'
+        if local_host:
+            host = 'mongodb'
+        self.connection_string = f"{host}://{user}:{password}@{uri}"
         self.client = MongoClient(self.connection_string)
         self.database = self.client.get_database(database_name)
 
