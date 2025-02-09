@@ -32,7 +32,7 @@ class DataLoaderBase:
         if start_time is None:
             if time_delay <= 0:
                 raise ValueError(
-                    "If `start_time` is None, `time_delay` must be greater than 0.")
+                    "If `start_time` is None, `time_delay` must be gt 0.")
             start_time = end_time - timedelta(days=time_delay)
 
         query = {

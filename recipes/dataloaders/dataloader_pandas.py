@@ -1,7 +1,7 @@
 """Loads Tickers into a Pandas DataFrame"""
 from __future__ import annotations
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from pandas import DataFrame
 
 
@@ -20,11 +20,11 @@ class PandasLoader(DataLoaderBase):
             end_time: datetime | None = None,
             time_delay: float = 0.,
             interval: str = '1d'
-    ) -> DataFrame :
+    ) -> DataFrame:
         """
         Query Collection and return Pandas DataFrame
-        :param start_time: initial datetime to search from. If None, `time_delta` is used.
-        :param end_time: end time to search to. If None, it searches till NOW()
+        :param start_time: start datetime. If None, `time_delta` is used.
+        :param end_time: end datetime. If None, it searches till NOW()
         :param time_delay: time to delay between requests. If None, no delay.
             if `start_time` is given, `time_delay` is ignored.
         :param interval: `1d` or `15m`
@@ -47,7 +47,7 @@ class PandasLoader(DataLoaderBase):
             df.drop(columns=["_id"], inplace=True)
 
         # Drop NaN
-        df.dropna(inplace=True,ignore_index=True)
+        df.dropna(inplace=True, ignore_index=True)
         return df
 
 
@@ -57,4 +57,3 @@ if __name__ == "__main__":
         time_delay=1,
     )
     print(len(df))
-
