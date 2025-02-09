@@ -23,7 +23,7 @@ class TestPipeline:
         assert pipeline.Pipeline(
             extractor=extractors.YahooExtractor(),
             translator=translators.YahooTranslator(),
-            loader=loaders.MongoLoader(None, None, None)
+            loader=loaders.MongoLoader(None, None, None, None)
         ).run()
 
     def test_get_start_date_with_ticker(
@@ -41,7 +41,7 @@ class TestPipeline:
         dt = pipeline.Pipeline(
             extractor=extractors.YahooExtractor(),
             translator=translators.YahooTranslator(),
-            loader=loaders.MongoLoader(None, None, None)
+            loader=loaders.MongoLoader(None, None, None, None)
         ).get_start_date('1d')
         assert dt and isinstance(dt, datetime.datetime)
 
@@ -62,7 +62,7 @@ class TestPipeline:
         dt = pipeline.Pipeline(
             extractor=extractors.YahooExtractor(),
             translator=translators.YahooTranslator(),
-            loader=loaders.MongoLoader(None, None, None)
+            loader=loaders.MongoLoader(None, None, None, None)
         ).get_start_date('1d')
         assert dt and isinstance(dt, datetime.datetime)
         # dt object should be in past, no collection, tries to create it
@@ -86,7 +86,7 @@ class TestPipeline:
         dt = pipeline.Pipeline(
             extractor=extractors.YahooExtractor(),
             translator=translators.YahooTranslator(),
-            loader=loaders.MongoLoader(None, None, None)
+            loader=loaders.MongoLoader(None, None, None, None)
         ).get_start_date('15m')
         assert dt and isinstance(dt, datetime.datetime)
         # dt object should be in past, no collection, tries to create it
@@ -110,6 +110,6 @@ class TestPipeline:
             pipeline.Pipeline(
                 extractor=extractors.YahooExtractor(),
                 translator=translators.YahooTranslator(),
-                loader=loaders.MongoLoader(None, None, None)
+                loader=loaders.MongoLoader(None, None, None, None)
             ).get_start_date('unsupported')
         mock_mongo_client_class.MAX_RESULTS = 1
