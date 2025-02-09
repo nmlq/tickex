@@ -23,7 +23,9 @@ def validate_envvars(
     """
     for envvar in envvars:
         if envvar not in os.environ:
-            raise ValueError(f"Not all env vars available; {envvars}; Missing '{envvar}'")
+            raise ValueError(
+                f"Not all env vars available; {envvars}; Missing '{envvar}'"
+            )
 
 
 def main() -> None:
