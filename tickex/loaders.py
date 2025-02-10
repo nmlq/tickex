@@ -17,21 +17,20 @@ class MongoLoader:
             user: str,
             password: str,
             uri: str,
-            database_name: str = 'tickex',
-            local_host: bool = True) -> None:
+            protocol: str,
+            database_name: str = 'tickex') -> None:
         """
+        Initialize the MongoLoader.
 
-        :param user:
-        :param password:
-        :param uri:
-        :param database_name:
-        :param local_host: Indicates if it's running locally or MongoDB Atlas Cloud service
+        Use standard user authentication strings built from the variables.
+
+        :param str user: username for mongodb
+        :param str password: password for user
+        :param str uri: url endpoint for connection
+        :param str protocol: usually 'mongodb' or 'mongodb+srv'
+        :param str database_name: database to connect to. default 'tickex'
         """
-
-        host = 'mongodb+srv'
-        if local_host:
-            host = 'mongodb'
-        self.connection_string = f"{host}://{user}:{password}@{uri}"
+        self.connection_string = f"{protocol}://{user}:{password}@{uri}"
         self.client = MongoClient(self.connection_string)
         self.database = self.client.get_database(database_name)
 

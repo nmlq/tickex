@@ -14,7 +14,8 @@ def validate_envvars(
         envvars: list = [
             "MONGO_PASS",
             "MONGO_URI",
-            "MONGO_USER"]) -> None:
+            "MONGO_USER",
+            "MONGO_PROTOCOL"]) -> None:
     """Check for required environment variables.
 
     :return None:
@@ -22,7 +23,9 @@ def validate_envvars(
     """
     for envvar in envvars:
         if envvar not in os.environ:
-            raise ValueError("Not all env vars available; {envvars}")
+            raise ValueError(
+                f"Not all env vars available; {envvars}; Missing '{envvar}'"
+            )
 
 
 def main() -> None:
@@ -41,7 +44,8 @@ def main() -> None:
         loader=loaders.MongoLoader(
             user=os.environ['MONGO_USER'],
             password=os.environ['MONGO_PASS'],
-            uri=os.environ['MONGO_URI']
+            uri=os.environ['MONGO_URI'],
+            protocol=os.environ['MONGO_PROTOCOL']
         )
     ).run()
     logger.info("Completed running the ETL pipeline")

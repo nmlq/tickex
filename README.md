@@ -9,6 +9,9 @@ When using the mongodb loader (default) with the cli, the following environment 
 * `MONGO_PASS` - Mongo DB password
 * `MONGO_URI` - Mongo DB endpoint
 * `MONGO_USER` - Mongo DB username
+* `MONGO_PROTOCOL` - Mongo DB connection protocol
+
+`MONGO_PROTOCOL` is usually `mongodb` or `mongodb+srv`
 
 Be default, a database called `tickerx` will be created with two collections `1d` and `15m`.
 
