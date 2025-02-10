@@ -14,7 +14,7 @@ class TestMongoLoader:
         :raises AssertionError:
         """
         monkeypatch.setattr(loaders, "MongoClient", mock_mongo_client_class)
-        loader = loaders.MongoLoader(None, None, None)
+        loader = loaders.MongoLoader(None, None, None, None)
         assert loader.get_collection('mock_collection_name')
 
     def test_get_last_ticker_with_mocks(
@@ -27,7 +27,7 @@ class TestMongoLoader:
         :raises AssertionError:
         """
         monkeypatch.setattr(loaders, "MongoClient", mock_mongo_client_class)
-        loader = loaders.MongoLoader(None, None, None)
+        loader = loaders.MongoLoader(None, None, None, None)
         ticker = loader.get_last_ticker('1d')
         assert ticker and isinstance(ticker, types.Ticker)
         assert isinstance(ticker.timestamp, datetime.datetime)
@@ -43,7 +43,7 @@ class TestMongoLoader:
         """
         mock_mongo_client_class.MAX_RESULTS = 0
         monkeypatch.setattr(loaders, "MongoClient", mock_mongo_client_class)
-        loader = loaders.MongoLoader(None, None, None)
+        loader = loaders.MongoLoader(None, None, None, None)
         ticker = loader.get_last_ticker('1d')
         assert ticker is None
         mock_mongo_client_class.MAX_RESULTS = 1
@@ -59,5 +59,5 @@ class TestMongoLoader:
         :raises AssertionError:
         """
         monkeypatch.setattr(loaders, "MongoClient", mock_mongo_client_class)
-        loader = loaders.MongoLoader(None, None, None)
+        loader = loaders.MongoLoader(None, None, None, None)
         assert loader.load([ticker_dt], '1d')
