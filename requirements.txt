@@ -1,6 +1,6 @@
 pandas
-yfinance
 pytest
 flake8
 pymongo
 tqdm
+yfinance==0.2.54
