@@ -10,7 +10,7 @@ FROM base AS test
 COPY tests/ tests/
 RUN pip install --no-cache-dir --user pytest
 ENV PATH=/root/.local/bin:$PATH
-CMD ["pytest", "tests/"]
+CMD ["pytest", "-xvs", "tests/"]
 
 # ---- Runtime stage (slim, no test deps or test files) ----
 FROM python:3.12-slim AS runtime
