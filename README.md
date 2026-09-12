@@ -15,6 +15,18 @@ When using the mongodb loader (default) with the cli, the following environment 
 
 Be default, a database called `tickerx` will be created with two collections `1d` and `15m`.
 
+## Ticker values
+
+By default yahoo finance is used to gather ticker data, if it is not programattically defined at runtime, some defaults are supplied. 
+
+In addition, you can use an environment variable to inject them.
+
+One ticker separated by a comma. They should be able to be viewed at yahoo finance.
+
+```
+ADDITIONAL_TICKERS=A,B,C
+```
+
 ## Pipeline
 
 Using the `yfinance` module, initially get 5 years of single day tickers and 60 days of 15 minute tickers.
@@ -42,6 +54,8 @@ Example
 ```
 
 # MongoDB Setup
+
+You can always test locally, here is an example.
 
 ## Version
 MongoDB 8.0 Community Edition on Ubuntu (8.0.4)

@@ -4,6 +4,7 @@ import yfinance
 import datetime
 import pandas
 import logging
+import os
 
 
 logger = logging.getLogger(__name__)
@@ -20,12 +21,26 @@ class YahooExtractor:
         )
 
     @staticmethod
+    def get_additional_ticker_names() -> set:
+        """Get the additional env var tickers
+
+        :return list:
+        """
+        additional_tickers = list()
+        if os.getenv("ADDITIONAL_TICKERS"):
+            raw_values = os.getenv("ADDITIONAL_TICKERS")
+            additional_tickers = [t.strip() for t in raw_values.split(",")]
+    
+        return set(additional_tickers)
+
+    @staticmethod
     def get_default_ticker_names() -> list:
         """Default supported tickers
 
         :return list:
         """
-        return [
+        # Some defaults
+        defaults = set([
             # Fiat currency
             # US Dollar / Pound Sterling
             "USDGBP=X",
@@ -54,7 +69,10 @@ class YahooExtractor:
             "SOL-USD",
             # US Dollar / Dogecoin
             "DOGE-USD"
-        ]
+        ])
+        defaults |= YahooExtractor.get_additional_ticker_names()
+            
+        return sorted(list(defaults))
 
     def extract(
             self,

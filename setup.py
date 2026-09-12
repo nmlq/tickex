@@ -9,7 +9,7 @@ def read_requirements(filename: str):
 
 setuptools.setup(
     name="tickex",
-    version='1.0.1',
+    version='1.0.2',
     description="Ticker data for Forex",
     long_description="Ticker data for Forex",
     author="Nathan McCoy",
