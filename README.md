@@ -27,6 +27,8 @@ One ticker separated by a comma. They should be able to be viewed at yahoo finan
 ADDITIONAL_TICKERS=A,B,C
 ```
 
+they will be split and used along with defaults.
+
 ## Pipeline
 
 Using the `yfinance` module, initially get 5 years of single day tickers and 60 days of 15 minute tickers.
@@ -55,7 +57,8 @@ Example
 
 # MongoDB Setup
 
-You can always test locally, here is an example.
+You can always test locally, here is an example test database setup. 
+The pipeline should create these things automatically.
 
 ## Version
 MongoDB 8.0 Community Edition on Ubuntu (8.0.4)
