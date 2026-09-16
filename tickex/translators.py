@@ -24,7 +24,7 @@ class YahooTranslator:
             for ticker_name, ticker_values in row.groupby('Ticker'):
                 ticker = types.Ticker(
                     name=ticker_name,
-                    timestamp=timestamp.utcnow().isoformat(),
+                    timestamp=timestamp.isoformat(),
                     close=float(ticker_values[('Close', ticker_name)]),
                     high=float(ticker_values[('High', ticker_name)]),
                     low=float(ticker_values[('Low', ticker_name)]),
